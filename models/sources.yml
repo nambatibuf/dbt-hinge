@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: raw_app
+    description: "Raw Hinge app data from the raw.app schema"
+    database: raw
+    schema: app
+    tables:
+
+      - name: users
+        description: "Base user table"
+
+      - name: user_likes
+        description: "User like actions"
+
+      - name: user_messages
+        description: "Messages exchanged between users"
+
+      - name: user_matches
+        description: "User match events"
+
+      - name: user_conversations
+        description: "Conversation threads"
+
+      - name: user_subscriptions
+        description: "User subscription accounts"
+
+      - name: user_payments
+        description: "Payments + billing transactions"
+
+      - name: subscription_plans
+        description: "Subscription plan lookup"
+
+      - name: user_reported_accounts
+        description: "Abuse and report events"
