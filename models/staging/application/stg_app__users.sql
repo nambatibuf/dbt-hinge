@@ -9,10 +9,7 @@
 with base as (
 
     select
-        -- business key
         user_id,
-
-        -- core attributes
         status,
         country_code,
         timezone,

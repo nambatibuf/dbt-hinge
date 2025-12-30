@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_app_users
+  - name: stg_app__users
     description: >
       Staging model for app users, flattened & typed from raw_app.users.
 
