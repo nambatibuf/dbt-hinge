@@ -12,6 +12,6 @@
 
 select
     *
-from {{ ref('stg_app_users') }}
+from {{ ref('stg_app__users') }}
 
 {% endsnapshot %}

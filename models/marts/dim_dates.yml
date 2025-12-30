@@ -1,0 +1,181 @@
+version: 2
+
+models:
+  - name: dim_dates
+    description: >
+      Date dimension table providing rich calendar, fiscal, holiday,
+      week, and period attributes for use in fact table joins and reporting.
+      Includes one record per day plus a special -1 “Unknown” record.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: date_key
+        description: >
+          Surrogate integer key for the date in YYYYMMDD format.
+          Used as the primary key and foreign key in fact tables.
+        data_type: int
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - unique
+
+      # ========= BASE DATE FIELDS =========
+      - name: date
+        description: >
+          Calendar date value for the row.
+        data_type: date
+
+      - name: date_description
+        description: >
+          Human-readable full date description
+          (e.g., 'Monday, January 01, 2024').
+        data_type: string
+
+
+      # ========= YEAR & QUARTER =========
+      - name: year
+        description: Calendar year number.
+        data_type: int
+
+      - name: quarter
+        description: Calendar quarter number (1–4).
+        data_type: int
+
+      - name: quarter_name
+        description: Short quarter label (e.g., 'Q1').
+        data_type: string
+
+      - name: quarter_name_full
+        description: Full descriptive quarter name.
+        data_type: string
+
+      - name: start_of_quarter
+        description: First date of the quarter.
+        data_type: date
+
+      - name: end_of_quarter
+        description: Last date of the quarter.
+        data_type: date
+
+      - name: year_quarter_name
+        description: Combined year + quarter label (e.g., '2024 Q1').
+        data_type: string
+
+
+      # ========= MONTH =========
+      - name: month
+        description: Calendar month number (1–12).
+        data_type: int
+
+      - name: month_name
+        description: Full month name (e.g., 'January').
+        data_type: string
+
+      - name: month_name_short
+        description: Short month abbreviation (e.g., 'Jan').
+        data_type: string
+
+      - name: start_of_month
+        description: First date of the month.
+        data_type: date
+
+      - name: end_of_month
+        description: Last date of the month.
+        data_type: date
+
+      - name: days_in_month
+        description: Number of days in the month.
+        data_type: int
+
+      - name: year_month
+        description: Year-month identifier in YYYY-MM format.
+        data_type: string
+
+      - name: month_number_in_year
+        description: Month number within the year (1–12).
+        data_type: int
+
+
+      # ========= DAY & WEEK =========
+      - name: day
+        description: Day of month (1–31).
+        data_type: int
+
+      - name: day_of_week
+        description: >
+          Day of week integer where Monday = 1 and Sunday = 7.
+        data_type: int
+
+      - name: day_of_week_name
+        description: Full name of weekday (e.g., 'Monday').
+        data_type: string
+
+      - name: day_of_week_name_short
+        description: Short weekday name (e.g., 'Mon').
+        data_type: string
+
+      - name: start_of_week
+        description: Monday date representing start of week.
+        data_type: date
+
+      - name: end_of_week
+        description: Sunday date representing end of week.
+        data_type: date
+
+      - name: day_number_in_year
+        description: Day number within calendar year (1–365/366).
+        data_type: int
+
+      - name: week_number_in_year
+        description: >
+          Week number as returned by Spark weekofyear().
+        data_type: int
+
+
+      # ========= YEAR BOUNDARIES =========
+      - name: start_of_year
+        description: First date of calendar year.
+        data_type: date
+
+      - name: end_of_year
+        description: Last date of calendar year.
+        data_type: date
+
+
+      # ========= FISCAL (Aligned to Calendar) =========
+      - name: fiscal_year
+        description: Fiscal year (same as calendar year).
+        data_type: int
+
+      - name: fiscal_quarter
+        description: Fiscal quarter (same as calendar quarter).
+        data_type: int
+
+      - name: fiscal_month
+        description: Fiscal month (same as calendar month).
+        data_type: int
+
+
+      # ========= INDICATORS =========
+      - name: last_day_in_month_indicator
+        description: >
+          Indicates whether date is final day of month.
+          Values: 'Last Day In Month' / 'Not Last Day In Month'.
+        data_type: string
+
+      - name: holiday_indicator
+        description: >
+          Indicates whether date is a US Federal Holiday based on
+          `us_federal_holidays` seed.
+          Values: 'Holiday' / 'Not Holiday'.
+        data_type: string
+
+      - name: weekend_indicator
+        description: >
+          Indicates whether date falls on Saturday or Sunday.
+          Values: 'Weekend' / 'Not Weekend'.
+        data_type: string
