@@ -1,0 +1,131 @@
+version: 2
+
+models:
+  - name: dim_users
+    description: >
+      SCD2 User Dimension built from snapshot_users_scd2.
+
+      Grain:
+      • One row per (user_id, SCD2 version)
+      • user_sk is the surrogate dimension key
+      • A new row is created when a tracked attribute changes
+      • is_current_record = 1 marks the active version
+
+    columns:
+
+      - name: user_sk
+        description: >
+          Surrogate dimension key for this SCD2 version of the user.
+          Derived from dbt_scd_id.
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: "Natural / business key of the user."
+        tests:
+          - not_null
+
+      # CORE ATTRIBUTES
+      - name: user_status
+        description: "User status value for this version."
+
+      - name: user_country_code
+        description: "Country associated with the user for this version."
+
+      - name: timezone
+        description: "User timezone at time of this version."
+
+      - name: is_test_user_flag
+        description: "Boolean test account indicator."
+
+      - name: marketing_source
+        description: "Marketing / acquisition channel."
+
+      # PROFILE
+      - name: first_name
+        description: "First name value."
+
+      - name: city
+        description: "City from profile."
+
+      - name: birthdate
+        description: "User birthdate."
+
+      - name: gender
+        description: "Gender identity."
+
+      - name: orientation
+        description: "Orientation field."
+
+      - name: height_cm
+        description: "Height in centimeters."
+
+      - name: education_level
+        description: "Highest education level."
+
+      - name: employer
+        description: "Employer name."
+
+      - name: job_title
+        description: "Job title text."
+
+      # PREFERENCES
+      - name: pref_gender
+        description: "Preferred match gender setting."
+
+      - name: pref_min_age
+        description: "Minimum preferred match age."
+
+      - name: pref_max_age
+        description: "Maximum preferred match age."
+
+      - name: pref_max_distance_km
+        description: "Maximum preferred distance in kilometers."
+
+      # LOCATION
+      - name: approx_country_code
+        description: "Approximate country based on geo signals."
+
+      - name: approx_lat
+        description: "Approximate latitude."
+
+      - name: approx_lon
+        description: "Approximate longitude."
+
+      # TEMPORAL FIELDS
+      - name: user_created_at
+        description: "User account creation timestamp."
+
+      - name: event_ts
+        description: "Source event timestamp that triggered this SCD2 version."
+
+      - name: dbt_valid_from
+        description: "Timestamp when this version of the row became valid."
+
+      - name: dbt_valid_to
+        description: "Timestamp when this version stopped being valid (null = current)."
+
+      - name: dbt_updated_at
+        description: "Timestamp dbt registered the update."
+
+      # DATE KEYS
+      - name: birthdate_key
+        description: "Dim-date key derived from birthdate (YYYYMMDD)."
+
+      - name: user_created_date_key
+        description: "Dim-date key derived from account creation date."
+
+      - name: valid_from_date_key
+        description: "Dim-date key for dbt_valid_from."
+
+      - name: valid_to_date_key
+        description: "Dim-date key for dbt_valid_to (or 9999-12-31 placeholder)."
+
+      # CURRENT FLAG
+      - name: is_current_record
+        description: >
+          Indicates whether this is the active/current SCD2 version
+          for the user (1 = current, 0 = historical).
+        tests:
+          - not_null

@@ -1,0 +1,112 @@
+version: 2
+
+snapshots:
+  - name: snapshot_users_scd2
+    description: >
+      Type-2 Slowly Changing Dimension snapshot for user attributes.
+
+      Grain:
+      • One row per (user_id, SCD2 version)
+      • A new record is created whenever a tracked attribute changes
+      • dbt_valid_from / dbt_valid_to define the validity interval
+
+      This table stores the complete historical state for each user.
+
+    columns:
+
+      # SCD2 SYSTEM FIELDS
+      - name: dbt_scd_id
+        description: "SCD2 surrogate key for this version of the user record."
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: "Business identifier of the user."
+        tests:
+          - not_null
+
+      - name: dbt_valid_from
+        description: "Timestamp when this version of the row became effective."
+        tests:
+          - not_null
+
+      - name: dbt_valid_to
+        description: >
+          Timestamp when this version stopped being valid.
+          Null indicates the row is currently active.
+
+      - name: dbt_updated_at
+        description: >
+          Timestamp when dbt detected that a change occurred and created this version.
+
+      - name: event_ts
+        description: >
+          Source-system event/change timestamp used for SCD2 comparison.
+
+      # CORE ATTRIBUTES
+      - name: status
+        description: "User lifecycle status in the application."
+
+      - name: country_code
+        description: "ISO country code associated with the user."
+
+      - name: timezone
+        description: "User timezone string."
+
+      - name: is_test_user
+        description: "Boolean flag identifying test / QA accounts."
+
+      - name: marketing_source
+        description: "User acquisition / attribution source."
+
+      # PROFILE
+      - name: first_name
+        description: "First name of the user."
+
+      - name: city
+        description: "City listed in profile."
+
+      - name: birthdate
+        description: "Birthdate from profile."
+
+      - name: gender
+        description: "Gender identity selected by the user."
+
+      - name: orientation
+        description: "User sexual orientation field."
+
+      - name: height_cm
+        description: "Height in centimeters."
+
+      - name: education_level
+        description: "Highest education level."
+
+      - name: employer
+        description: "Employer name."
+
+      - name: job_title
+        description: "Job title string from profile."
+
+      # LOCATION
+      - name: approx_country_code
+        description: "Approximate country inferred from geo metadata."
+
+      - name: approx_lat
+        description: "Approximate latitude coordinate."
+
+      - name: approx_lon
+        description: "Approximate longitude coordinate."
+
+      # PREFERENCES
+      - name: pref_gender
+        description: "Preferred match gender."
+
+      - name: pref_min_age
+        description: "Minimum match preference age."
+
+      - name: pref_max_age
+        description: "Maximum match preference age."
+
+      - name: pref_max_distance_km
+        description: "Maximum preferred matching distance (km)."
