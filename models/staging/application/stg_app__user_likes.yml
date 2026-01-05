@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: stg_app__user_likes
+    description: >
+      Staging table of user like events. Each row represents a single like action
+      from one user to another, including where it happened in the app and when.
+
+    columns:
+      - name: like_id
+        description: "Unique identifier for the like event (table grain: 1 row per like_id)."
+        tests:
+          - not_null
+          - unique
+
+      - name: liker_user_id
+        description: "User ID of the person who initiated the like (sender)."
+        tests:
+          - not_null
+
+      - name: liked_user_id
+        description: "User ID of the person who received the like (receiver)."
+        tests:
+          - not_null
+
+      - name: like_type
+        description: "Type of like event (e.g. 'like', 'rose', 'super_like')."
+
+
+      - name: source_surface
+        description: "App surface where the like occurred (e.g. 'discovery', 'standouts', 'profile')."
+
+      - name: liked_at
+        description: "Timestamp when the like occurred in the app."
+        tests:
+          - not_null
+
+      - name: comment_text
+        description: "Optional text comment or message that accompanied the like, if any."

@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: stg_default__dates
+    description: "Staging date dimension from 2015-01-01 to 2035-12-31 plus an Unknown row (date_key = -1). Includes calendar attributes, week boundaries (Mon–Sun), and US federal holiday indicator via us_federal_holidays seed."
+
+    columns:
+      - name: date_key
+        description: "Primary key in yyyymmdd format as int. Includes -1 for Unknown."
+        tests:
+          - not_null
+          - unique
+
+      - name: date
+        description: "Calendar date. Null for Unknown row."
+
+      - name: date_description
+        description: "Human-readable date label."
+
+      - name: year
+        description: "Calendar year."
+
+      - name: quarter
+        description: "Calendar quarter (1-4)."
+
+      - name: quarter_name
+        description: "Quarter short name (Q1-Q4)."
+
+      - name: quarter_name_full
+        description: "Quarter full name (First Quarter, etc.)."
+
+      - name: start_of_quarter
+        description: "First date of the quarter."
+
+      - name: end_of_quarter
+        description: "Last date of the quarter."
+
+      - name: year_quarter_name
+        description: "Formatted year-quarter label (e.g., 2026 Q1)."
+
+      - name: month
+        description: "Month number (1-12)."
+
+      - name: month_name
+        description: "Month name (January..December)."
+
+      - name: month_name_short
+        description: "Month abbreviation (Jan..Dec)."
+
+      - name: start_of_month
+        description: "First date of the month."
+
+      - name: end_of_month
+        description: "Last date of the month."
+
+      - name: days_in_month
+        description: "Number of days in the month."
+
+      - name: year_month
+        description: "Formatted year-month string (yyyy-MM)."
+
+      - name: month_number_in_year
+        description: "Same as month (kept for semantic clarity)."
+
+      - name: day
+        description: "Day of month (1-31)."
+
+      - name: day_of_week
+        description: "Day of week with Monday=1 ... Sunday=7."
+
+      - name: day_of_week_name
+        description: "Day name (Monday..Sunday)."
+
+      - name: day_of_week_name_short
+        description: "Day abbreviation (Mon..Sun)."
+
+      - name: start_of_week
+        description: "Start of week (Monday) for the given date."
+
+      - name: end_of_week
+        description: "End of week (Sunday) for the given date."
+
+      - name: day_number_in_year
+        description: "Day number in year (1-365/366)."
+
+      - name: week_number_in_year
+        description: "ISO-like week number (Spark weekofyear)."
+
+      - name: start_of_year
+        description: "First date of year."
+
+      - name: end_of_year
+        description: "Last date of year."
+
+      - name: fiscal_year
+        description: "Fiscal year (same as calendar year)."
+
+      - name: fiscal_quarter
+        description: "Fiscal quarter (same as calendar quarter)."
+
+      - name: fiscal_month
+        description: "Fiscal month (same as calendar month)."
+
+      - name: last_day_in_month_indicator
+        description: "Whether date is the last day of month."
+
+      - name: holiday_indicator
+        description: "Holiday flag based on us_federal_holidays seed."
+
+      - name: weekend_indicator
+        description: "Weekend flag (Saturday/Sunday)."

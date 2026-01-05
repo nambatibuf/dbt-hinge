@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: >
+      Dimension table for purchasable products and add-ons such as subscriptions,
+      boosts, priority likes, roses, and one-time feature packs. Each row
+      represents a distinct product SKU or add-on offering.
+
+    columns:
+      - name: product_id
+        description: "Surrogate / business identifier for the product or add-on."
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Display name of the product shown to users in the app or store."
+
+      - name: product_type
+        description: >
+          Type of product. Examples:
+          'subscription', 'one_time', 'addon', 'feature_pack'.
+
+      - name: product_category
+        description: >
+          Higher-level grouping for reporting (e.g., Monetization, Engagement Add-ons,
+          Subscription Upgrades, Consumables like Roses).
+
+      - name: product_discount
+        description: "Boolean flag or percentage value indicating if a discount applies."
+
+      - name: product_likes_unlimited
+        description: "Indicates whether this product unlocks unlimited likes."
+
+      - name: product_priority_likes
+        description: "Enables higher-ranked or boosted likes when purchased."
+
+      - name: product_standouts_boost
+        description: "Indicates whether the product includes Standouts / Boost visibility."
+
+      - name: product_roses_count
+        description: "Number of roses granted when the product is a roses pack."

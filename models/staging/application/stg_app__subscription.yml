@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_app__subscription
+    description: "Stages subscription plans from raw_app.subscription_plans and renames fields into a product-style schema (includes perks flattening + derived roses pack count)."
+
+    columns:
+      - name: product_id
+        description: "Plan identifier from source.plan_id. Primary key."
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Plan name from source.plan_name (e.g., HingePlus, HingeX, Roses — 3 Pack)."
+        tests:
+          - not_null
+
+      - name: product_type
+        description: "Billing period (e.g., monthly, yearly) from source.billing_period."
+        tests:
+          - not_null
+
+      - name: product_category
+        description: "Tier/category of plan (e.g., plus, x) from source.tier."
+
+      - name: product_discount
+        description: "Perks discount flag from source.perks.discount (boolean or nullable)."
+
+      - name: product_likes_unlimited
+        description: "Perks unlimited likes flag from source.perks.likes_unlimited (boolean or nullable)."
+
+      - name: product_priority_likes
+        description: "Perks priority likes flag from source.perks.priority_likes (boolean or nullable)."
+
+      - name: product_standouts_boost
+        description: "Perks standouts boost flag from source.perks.standouts_boost (boolean or nullable)."
+
+      - name: product_roses_count
+        description: "Derived: number of roses in pack extracted from product_name (e.g., 3 from 'Roses — 3 Pack'). Nullable for non-roses plans."
