@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: stg_app__user_visits
+    description: "Staging model that parses and flattens Kafka JSON payload (value_str) from raw.app.user_visits and dedupes by event_id (latest ingest_ts/kafka_offset)."
+
+    columns:
+      - name: event_id
+        description: "Primary key for the event. Parsed from JSON payload (value_str)."
+        tests:
+          - not_null
+          - unique
+
+      - name: event_type
+        description: "Type of event (e.g., user_profile_impression)."
+        tests:
+          - not_null
+
+      - name: viewer_user_id
+        description: "User who viewed the profile."
+        tests:
+          - not_null
+
+      - name: viewed_user_id
+        description: "User whose profile was viewed."
+        tests:
+          - not_null
+
+      - name: impression_time_utc
+        description: "UTC timestamp when the impression happened (from payload)."
+
+      - name: impression_date
+        description: "UTC date of impression (from payload)."
+
+      - name: impression_hour_utc
+        description: "UTC hour (0-23) of impression (from payload)."
+
+      - name: source
+        description: "Source surface where impression happened (e.g., home_feed)."
+
+      - name: platform
+        description: "Client platform (ios/android/web)."
+
+      - name: viewer_membership_tier
+        description: "Viewer membership tier (free/plus/x)."
+
+      - name: rank_in_feed
+        description: "Rank position in the feed where profile appeared."
+
+      - name: is_boosted_profile
+        description: "Whether the viewed profile was boosted."
+
+      - name: viewer_has_likes_left
+        description: "Whether viewer had likes remaining."
+
+      - name: viewer_country
+        description: "Viewer country code."
+
+      - name: viewer_city
+        description: "Viewer city."
+
+      - name: topic
+        description: "Kafka topic."
+
+      - name: kafka_partition
+        description: "Kafka partition."
+
+      - name: kafka_offset
+        description: "Kafka offset."
+
+      - name: kafka_timestamp
+        description: "Kafka message timestamp."
+
+      - name: key_str
+        description: "Kafka key (string)."
+
+      - name: ingest_ts
+        description: "Ingestion timestamp when bronze append happened."
+        tests:
+          - not_null

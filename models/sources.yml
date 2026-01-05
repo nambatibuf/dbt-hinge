@@ -33,3 +33,6 @@ sources:
 
       - name: user_reported_accounts
         description: "Abuse and report events"
+
+      - name: user_visits
+        description: "Kafka bronze table for hinge-user-visits (value_str contains JSON payload)."
